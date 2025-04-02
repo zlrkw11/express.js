@@ -49,3 +49,11 @@ app.get("/api/users/:id", (request, response) => {
 });
 
 // ``````
+
+// delete a user
+app.delete("/api/users/:id", (req, res) => {
+  const parsedId = parseInt(req.params.id);
+  userIndex = mockUsers.findIndex((user) => user.id == parsedId);
+  mockUsers.splice(userIndex, 1);
+  res.status(200).send({ message: `user ${parsedId} deleted` });
+});

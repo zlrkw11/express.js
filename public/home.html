@@ -16,12 +16,32 @@
         const users = await response.json();
 
         const userList = document.getElementById("user-list");
+
         userList.innerHTML = "";
+
         users.forEach((user) => {
           const li = document.createElement("li");
+          const button = document.createElement("button");
+          button.onclick = () => deleteUser(user.id, li);
+          button.textContent = "delete";
           li.textContent = `ID: ${user.id} | Username: ${user.username}`;
+          li.appendChild(button);
           userList.appendChild(li);
         });
+      }
+
+      function deleteUser(id, li) {
+        li.remove();
+        fetch(`/api/users/${id}`, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(`User ${id} deleted`);
+          })
+          .catch((error) => {
+            console.log("Error deleting user");
+          });
       }
       fetchUsers();
     </script>
