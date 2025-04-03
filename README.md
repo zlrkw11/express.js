@@ -34,3 +34,24 @@ app.get("/api/users/:id", (request, response) => {
 4. if yes, find the user using the id from the database
 5. if not found, return 404
 6. otherwise return user object
+
+## Query Parameters
+```Javascript
+localhost:3000/products?key=value&key2=value2
+```
+**usage**
+- send data across pages (client -> server)
+
+To see the request's query parameters (which contains the parameters we
+want to request the server to do):
+```Javascript
+console.log(request.query);
+```
+
+Then, destructure the ```query params``` into whatever we pass into the query, in this case: filter, value
+
+```Javascript
+  const {
+    query: { filter, value },
+  } = request;
+```

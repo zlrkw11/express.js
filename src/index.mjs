@@ -9,8 +9,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "..", "public")));
 const mockUsers = [
-  { id: 1, username: "a" },
-  { id: 2, username: "b" },
+  { id: 1, username: "anson" },
+  { id: 2, username: "jack" },
+  { id: 3, username: "adam" },
+  { id: 4, username: "mary" },
+  { id: 5, username: "maria" },
 ];
 
 // localhost:3000
@@ -24,6 +27,17 @@ app.get("/", (request, response) => {
 
 // localhost:3000/api/users
 app.get("/api/users", (request, response) => {
+  console.log(request.query);
+  const {
+    query: { filter, value },
+  } = request;
+  // if filter and value are undefined
+  if (!filter && !value) return response.send(mockUsers);
+  if (filter && value)
+    // grab the correct field and check if it contains the value we want
+    return response.send(
+      mockUsers.filter((user) => user[filter].includes(value))
+    );
   response.send(mockUsers);
 });
 
@@ -57,3 +71,5 @@ app.delete("/api/users/:id", (req, res) => {
   mockUsers.splice(userIndex, 1);
   res.status(200).send({ message: `user ${parsedId} deleted` });
 });
+
+// query string
