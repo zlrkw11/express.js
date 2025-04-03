@@ -31,13 +31,13 @@ app.get("/api/users", (request, response) => {
   const {
     query: { filter, value },
   } = request;
-  // if filter and value are undefined
-  if (!filter && !value) return response.send(mockUsers);
+
   if (filter && value)
     // grab the correct field and check if it contains the value we want
     return response.send(
       mockUsers.filter((user) => user[filter].includes(value))
     );
+
   response.send(mockUsers);
 });
 

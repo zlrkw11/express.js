@@ -55,3 +55,13 @@ Then, destructure the ```query params``` into whatever we pass into the query, i
     query: { filter, value },
   } = request;
 ```
+Then finally we set up the function to filter the ```mockUsers``` array and get the desired values using the ```[]``` and ```.includes``` to grab the right values(value) from the correct fields(filter) 
+```Javascript
+ if (!filter && !value) return response.send(mockUsers);
+  if (filter && value)
+    // grab the correct field and check if it contains the value we want
+    return response.send(
+      mockUsers.filter((user) => user[filter].includes(value))
+    );
+  response.send(mockUsers);
+```
