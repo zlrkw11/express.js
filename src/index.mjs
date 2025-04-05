@@ -76,5 +76,10 @@ app.delete("/api/users/:id", (req, res) => {
 // post
 app.post("/api/users", (req, res) => {
   console.log(req.body);
-  return res.send(200);
+  // assume the request body is a valid user object
+  const { body } = req;
+  const newUser = { id: mockUsers[mockUsers.length - 1].id + 1, ...body };
+  mockUsers.push(newUser);
+  console.log(mockUsers);
+  return res.status(200).send(newUser);
 });

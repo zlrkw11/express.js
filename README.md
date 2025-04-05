@@ -72,4 +72,17 @@ send the data via a payload (request body)\
 backend takes that data and does certain operations.\
 saving that record to database when done and sends back a 201 code(signals the resource is created)
 
-express does not parse json objects by defualt. So, we need to use a middleware to parse them manually.
+express does not parse json objects by defualt. So, we need to use a middleware to parse them manually:
+```Javascript
+app.use(express.json());
+```
+
+note:
+```Javascript
+const {body} = req;
+```
+
+is short for:
+```Javascript
+const body = req.body;
+```
