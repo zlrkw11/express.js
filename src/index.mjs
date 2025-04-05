@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -72,4 +73,8 @@ app.delete("/api/users/:id", (req, res) => {
   res.status(200).send({ message: `user ${parsedId} deleted` });
 });
 
-// query string
+// post
+app.post("/api/users", (req, res) => {
+  console.log(req.body);
+  return res.send(200);
+});
