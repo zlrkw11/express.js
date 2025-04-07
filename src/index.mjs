@@ -116,6 +116,4 @@ app.patch("/api/users/:id", (req, res)=>{
   if (findUserIndex === -1) return res.sendStatus(404);
   // override the old user object with the key value pairs in the request body
   mockUsers[findUserIndex] = {...mockUsers[findUserIndex], ...body};
-
-
 })
