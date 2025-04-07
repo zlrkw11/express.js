@@ -101,3 +101,21 @@ app.put("/api/users/:id", (req, res) => {
   mockUsers[findUserIndex] = { id: parsedId, ...body };
   return res.sendStatus(200);
 });
+
+// patch
+app.patch("/api/users/:id", (req, res)=>{
+  const {
+    body,
+    params: { id },
+  } = req;
+  const parsedId = parseInt(id);
+  console.log(parsedId);
+  if (isNaN(parsedId)) return res.sendStatus(400);
+  const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
+  // if the user is not found
+  if (findUserIndex === -1) return res.sendStatus(404);
+  // override the old user object with the key value pairs in the request body
+  mockUsers[findUserIndex] = {...mockUsers[findUserIndex], ...body};
+
+
+})
