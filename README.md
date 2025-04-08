@@ -131,7 +131,6 @@ app.put("/api/users/:id", (req, res) => {
 ```
 
 ## Patch request
-
 We basically just destructure both `user` and the request `body` both into the user position we want to **change or update**. This allows for only certain fields (key-value pairs) to be updated but not replacing the object entirely.
 
 ```Javascript
