@@ -151,3 +151,23 @@ app.patch("/api/users/:id", (req, res)=>{
 ```
 
 ## Delete request
+- retrieve a user from req.params.id
+- make ````parsedId```
+- check if id is valid
+- try finding the user 
+- if not found, return 404
+- else splice the user list 
+
+```Javascript
+app.delete("/api/users/:id", (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
+  const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
+  if (findUserIndex === -1) return res.sendStatus(404);
+  mockUsers.splice(findUserIndex, 1);
+  return res.sendStatus(200);
+});
+```

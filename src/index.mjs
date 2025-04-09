@@ -117,6 +117,6 @@ app.delete("/api/users/:id", (req, res) => {
   if (isNaN(parsedId)) return res.sendStatus(400);
   const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
   if (findUserIndex === -1) return res.sendStatus(404);
-  mockUsers.splice(findUserIndex);
+  mockUsers.splice(findUserIndex, 1);
   return res.sendStatus(200);
 });
