@@ -63,16 +63,6 @@ app.get("/api/users/:id", (request, response) => {
   return response.send(findUser);
 });
 
-// ``````
-
-// delete a user
-app.delete("/api/users/:id", (req, res) => {
-  const parsedId = parseInt(req.params.id);
-  userIndex = mockUsers.findIndex((user) => user.id == parsedId);
-  mockUsers.splice(userIndex, 1);
-  res.status(200).send({ message: `user ${parsedId} deleted` });
-});
-
 // post
 app.post("/api/users", (req, res) => {
   console.log(req.body);
@@ -103,7 +93,7 @@ app.put("/api/users/:id", (req, res) => {
 });
 
 // patch
-app.patch("/api/users/:id", (req, res)=>{
+app.patch("/api/users/:id", (req, res) => {
   const {
     body,
     params: { id },
@@ -115,5 +105,18 @@ app.patch("/api/users/:id", (req, res)=>{
   // if the user is not found
   if (findUserIndex === -1) return res.sendStatus(404);
   // override the old user object with the key value pairs in the request body
-  mockUsers[findUserIndex] = {...mockUsers[findUserIndex], ...body};
-})
+  mockUsers[findUserIndex] = { ...mockUsers[findUserIndex], ...body };
+});
+
+// delete
+app.delete("/api/users/:id", (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  const parsedId = parseInt(id);
+  if (isNaN(parsedId)) return res.sendStatus(400);
+  const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
+  if (findUserIndex === -1) return res.sendStatus(404);
+  mockUsers.splice(findUserIndex);
+  return res.sendStatus(200);
+});
