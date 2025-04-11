@@ -4,6 +4,12 @@ import { fileURLToPath } from "url";
 
 const app = express();
 app.use(express.json());
+
+const loggingMiddleware = (req, res, next) => {
+  console.log(`${req.method} - ${req.url}`);
+  next();
+};
+
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,7 +28,7 @@ app.listen(PORT, () => {
   console.log(`Running on Port${PORT}`);
 });
 
-app.get("/", (request, response) => {
+app.get("/", loggingMiddleware, (request, response) => {
   response.sendFile(path.join(__dirname, "..", "public", "home.html"));
 });
 

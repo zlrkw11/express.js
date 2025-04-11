@@ -2,6 +2,11 @@
 
 this is a repo that records express.js related opeartions and structure
 
+to run 
+```bash
+npm run start:dev   
+```
+
 ## Routes set up
 
 A route is made up of a **route** and a **request handler**:
