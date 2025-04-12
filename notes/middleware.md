@@ -20,3 +20,11 @@ app.get("/", (req, res)=>{
 }
 )
 ```
+
+Must register the middleware before any of the routes that uses the middleware.
+
+in fact:
+```Javascript
+(request, response)
+```
+itself is a middleware.

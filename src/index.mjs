@@ -10,6 +10,21 @@ const loggingMiddleware = (req, res, next) => {
   next();
 };
 
+const resolveIndexByUserId = (req, res, next) => {
+  const {
+    body,
+    params: { id },
+  } = req;
+  const parsedId = parseInt(id);
+  console.log(parsedId);
+  if (isNaN(parsedId)) return res.sendStatus(400);
+  const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
+  // if the user is not found
+  if (findUserIndex === -1) return res.sendStatus(404);
+  req.findUserIndex = findUserIndex;
+  next();
+};
+
 const PORT = process.env.PORT || 3000;
 
 const __filename = fileURLToPath(import.meta.url);
@@ -81,20 +96,11 @@ app.post("/api/users", (req, res) => {
 });
 
 // put
-app.put("/api/users/:id", (req, res) => {
-  const {
-    body,
-    params: { id },
-  } = req;
-  const parsedId = parseInt(id);
-  console.log(parsedId);
-  if (isNaN(parsedId)) return res.sendStatus(400);
-  const findUserIndex = mockUsers.findIndex((user) => user.id === parsedId);
-  // if the user is not found
-  if (findUserIndex === -1) return res.sendStatus(404);
-  // updating the entire user object
+// updating the entire user object
+app.put("/api/users/:id", resolveIndexByUserId, (req, res) => {
+  const { body, findUserIndex } = req;
   // keep id the same, replace the original object with request body
-  mockUsers[findUserIndex] = { id: parsedId, ...body };
+  mockUsers[findUserIndex] = { id: mockUsers[findUserIndex].id, ...body };
   return res.sendStatus(200);
 });
 
