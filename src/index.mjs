@@ -1,4 +1,5 @@
 import express from "express";
+import { query, validationResult } from "express-validator";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -48,20 +49,25 @@ app.get("/", loggingMiddleware, (request, response) => {
 });
 
 // localhost:3000/api/users
-app.get("/api/users", (request, response) => {
-  console.log(request.query);
-  const {
-    query: { filter, value },
-  } = request;
+app.get(
+  "/api/users",
+  query("filter").isString().notEmpty(),
+  (request, response) => {
+    const result = validationResult(request);
+    console.log(result);
+    const {
+      query: { filter, value },
+    } = request;
 
-  if (filter && value)
-    // grab the correct field and check if it contains the value we want
-    return response.send(
-      mockUsers.filter((user) => user[filter].includes(value))
-    );
+    if (filter && value)
+      // grab the correct field and check if it contains the value we want
+      return response.send(
+        mockUsers.filter((user) => user[filter].includes(value))
+      );
 
-  response.send(mockUsers);
-});
+    response.send(mockUsers);
+  }
+);
 
 // localhost:3000/api/products
 app.get("/api/products", (request, response) => {
