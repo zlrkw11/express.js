@@ -1,7 +1,15 @@
 import express from "express";
-import { query, body, validationResult, matchedData } from "express-validator";
+import {
+  query,
+  body,
+  validationResult,
+  matchedData,
+  checkSchema,
+} from "express-validator";
 import path from "path";
 import { fileURLToPath } from "url";
+import { mockUsers } from "./utils/constants.mjs";
+import { createUserValidationSchema } from "./utils/validationSchemas.mjs";
 
 const app = express();
 app.use(express.json());
@@ -30,14 +38,6 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "..", "public")));
-
-const mockUsers = [
-  { id: 1, username: "anson" },
-  { id: 2, username: "jack" },
-  { id: 3, username: "adam" },
-  { id: 4, username: "mary" },
-  { id: 5, username: "maria" },
-];
 
 // localhost:3000
 app.listen(PORT, () => {
@@ -91,34 +91,21 @@ app.get("/api/users/:id", resolveIndexByUserId, (request, response) => {
 });
 
 // post
-app.post(
-  "/api/users",
-  body("username")
-    .notEmpty()
-    .withMessage("Must not be empty")
-    .isLength({ min: 5, max: 32 })
-    .withMessage(
-      "Username must be at least 5 characters with a max of 32 characters"
-    )
-    .isString()
-    .withMessage("Username must be a string"),
-  body("displayName").notEmpty(),
-  (req, res) => {
-    const result = validationResult(req);
-    console.log(result);
-    if (result.isEmpty()) {
-      return res.status(400).send({ erros: result.array() });
-    }
-    const data = matchedData(req);
-    console.log(data);
-    // assume the request body is a valid user object
-    const { body } = req;
-    const newUser = { id: mockUsers[mockUsers.length - 1].id + 1, ...body };
-    mockUsers.push(newUser);
-    console.log(mockUsers);
-    return res.status(200).send(newUser);
+app.post("/api/users", checkSchema(createUserValidationSchema), (req, res) => {
+  const result = validationResult(req);
+  console.log(result);
+  if (result.isEmpty()) {
+    return res.status(400).send({ erros: result.array() });
   }
-);
+  const data = matchedData(req);
+  console.log(data);
+  // assume the request body is a valid user object
+  const { body } = req;
+  const newUser = { id: mockUsers[mockUsers.length - 1].id + 1, ...body };
+  mockUsers.push(newUser);
+  console.log(mockUsers);
+  return res.status(200).send(newUser);
+});
 
 // put
 // updating the entire user object
