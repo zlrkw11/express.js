@@ -1,6 +1,13 @@
 # Middleware
 
-Essentially, a middleware is a processing function
+Essentially, a middleware is a processing function. It has access to **req** and **res** objects and the next middleware in the line. The next middleware is usually represented with **next**.
+
+it does
+- run any code
+- change req or res objects
+- end the request, respond to the loop
+- use the next middleware in the queue
+
 ```Javascript
 (request, response, next) => {}
 ```
