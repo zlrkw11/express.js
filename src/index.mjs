@@ -1,20 +1,11 @@
 import express from "express";
-import {
-  query,
-  body,
-  validationResult,
-  matchedData,
-  checkSchema,
-} from "express-validator";
 import path from "path";
 import { fileURLToPath } from "url";
-import { mockUsers } from "./utils/constants.mjs";
-import { createUserValidationSchema } from "./utils/validationSchemas.mjs";
-import userRouter from "./routes/user.mjs";
+import routes from "./routes/index.mjs";
 
 const app = express();
 app.use(express.json());
-app.use(userRouter);
+app.use(routes);
 
 const loggingMiddleware = (req, res, next) => {
   console.log(`${req.method} - ${req.url}`);
@@ -34,13 +25,3 @@ app.listen(PORT, () => {
 app.get("/", loggingMiddleware, (request, response) => {
   response.sendFile(path.join(__dirname, "..", "public", "home.html"));
 });
-
-// localhost:3000/api/products
-app.get("/api/products", (request, response) => {
-  response.send([
-    { id: 1, name: "product_1", price: 10 },
-    { id: 2, name: "product_2", price: 20 },
-  ]);
-});
-
-// delete
