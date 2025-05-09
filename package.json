@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/zlrkw11/express.js#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "express": "^5.1.0",
     "express-validator": "^7.2.1"
   },
